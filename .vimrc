@@ -1,7 +1,7 @@
-" Updated. Elapsed time: 0.926625 sec.
+
 nnoremap <F6> :w<CR>:!make<CR>
 
-" Enable file type detection, plugins, and indentationDone!
+" Enable file type detection, plugins, and indentationDone!Done!
 filetype on
 filetype plugin on
 filetype indent on
@@ -18,8 +18,8 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 set smartindent
-
-
+set foldmethod=syntax
+set foldlevelstart=0
 
 " Enable ruler to show cursor position
 set ruler
@@ -84,6 +84,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'dense-analysis/ale'      " Asynchronous Lint Engine
 Plug 'preservim/nerdtree'      " NERDTree File Explorer
 Plug 'bluz71/vim-moonfly-colors', { 'as': 'moonfly' }
+Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'tpope/vim-fugitive'      " Git pluggin
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -127,7 +128,6 @@ Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer')}
 call plug#end()
 
 " Set colorscheme after moonfly plugin has loaded
-colorscheme moonfly
 
 " }}}
 
@@ -151,7 +151,7 @@ noremap <c-right> <c-w><
 
 " NERDTree specific mappings.
 " Map the F3 key to toggle NERDTree open and close.
-nnoremap <F3> :Ranger<cr>
+nnoremap <F3> :NERDTree<cr>
 
 " Have nerdtree ignore certain files and directories.
 let NERDTreeIgnore=['\.git$', '\.jpg$', '\.mp4$', '\.ogg$', '\.iso$', '\.pdf$', '\.pyc$', '\.odt$', '\.png$', '\.gif$', '\.db$']
@@ -169,6 +169,10 @@ augroup END
 " If the current file type is HTML, set indentation to 2 spaces.
 autocmd Filetype html setlocal tabstop=2 shiftwidth=2 expandtab
 
+"autocmd FileType html setlocal foldmethod=indent
+"autocmd FileType javascript setlocal foldmethod=indent
+"autocmd FileType c setlocal foldmethod=syntax
+"set foldlevelstart=0
 
 " If GUI version of Vim is running set these options.
 if has('gui_running')
@@ -211,6 +215,33 @@ if has('gui_running')
 endif
 
 let g:ranger_replace_netrw = 1
+
+function! s:customize_dracula() abort
+      " Adjust the Normal background to a darker color
+      highlight Normal guibg=#1c1f26 ctermbg=234
+
+      " Customize the CursorLine to make it darker but still visible
+      highlight CursorLine guibg=#2a2e36 ctermbg=235
+
+      " Adjust other elements for a darker tone if desired
+      " highlight StatusLine guibg=#2a2e36 cterm=bold
+      " highlight LineNr guifg=#5a5f73 guibg=#1c1f26 ctermfg=60 ctermbg=235
+      " highlight Comment guifg=#4a4f66 ctermfg=59
+
+      " Customize more groups to darken the overall theme
+      " highlight GitGutterAdd guifg=#3d5a40 ctermfg=22
+      " highlight GitGutterChange guifg=#4f6fa0 ctermfg=25
+      " highlight GitGutterDelete guifg=#6f343f ctermfg=52
+endfunction
+
+augroup DraculaCustomization
+  autocmd!
+  autocmd ColorScheme dracula call s:customize_dracula()
+augroup END
+
+colorscheme dracula
+
+
 " }}}
 
 
